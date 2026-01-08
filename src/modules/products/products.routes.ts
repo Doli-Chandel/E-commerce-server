@@ -46,11 +46,97 @@ const upload = multer({
   },
 });
 
-// Public routes
+/**
+ * @swagger
+ * /api/products:
+ *   get:
+ *     summary: Get all products
+ *     tags: [Products]
+ *     security: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Products retrieved successfully
+ */
 router.get('/', validate(getProductsSchema), productsController.getAllProducts);
+
+/**
+ * @swagger
+ * /api/products/{id}:
+ *   get:
+ *     summary: Get product by ID
+ *     tags: [Products]
+ *     security: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     responses:
+ *       200:
+ *         description: Product retrieved successfully
+ *       404:
+ *         description: Product not found
+ */
 router.get('/:id', validate(getProductSchema), productsController.getProductById);
 
-// Admin routes
+/**
+ * @swagger
+ * /api/products:
+ *   post:
+ *     summary: Create a new product (Admin only)
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - description
+ *               - purchasePrice
+ *               - salePrice
+ *               - stock
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               purchasePrice:
+ *                 type: number
+ *               salePrice:
+ *                 type: number
+ *               stock:
+ *                 type: integer
+ *               isVisible:
+ *                 type: boolean
+ *     responses:
+ *       201:
+ *         description: Product created successfully
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Admin access required
+ */
 router.post(
   '/',
   authMiddleware,
@@ -59,6 +145,46 @@ router.post(
   productsController.createProduct
 );
 
+/**
+ * @swagger
+ * /api/products/{id}:
+ *   put:
+ *     summary: Update product (Admin only)
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               purchasePrice:
+ *                 type: number
+ *               salePrice:
+ *                 type: number
+ *               stock:
+ *                 type: integer
+ *               isVisible:
+ *                 type: boolean
+ *     responses:
+ *       200:
+ *         description: Product updated successfully
+ *       403:
+ *         description: Admin access required
+ */
 router.put(
   '/:id',
   authMiddleware,
@@ -67,6 +193,27 @@ router.put(
   productsController.updateProduct
 );
 
+/**
+ * @swagger
+ * /api/products/{id}:
+ *   delete:
+ *     summary: Delete product (Admin only)
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     responses:
+ *       200:
+ *         description: Product deleted successfully
+ *       403:
+ *         description: Admin access required
+ */
 router.delete(
   '/:id',
   authMiddleware,
@@ -75,6 +222,38 @@ router.delete(
   productsController.deleteProduct
 );
 
+/**
+ * @swagger
+ * /api/products/{id}/visibility:
+ *   patch:
+ *     summary: Update product visibility (Admin only)
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - isVisible
+ *             properties:
+ *               isVisible:
+ *                 type: boolean
+ *     responses:
+ *       200:
+ *         description: Visibility updated successfully
+ *       403:
+ *         description: Admin access required
+ */
 router.patch(
   '/:id/visibility',
   authMiddleware,
@@ -83,6 +262,39 @@ router.patch(
   productsController.updateVisibility
 );
 
+/**
+ * @swagger
+ * /api/products/{id}/stock:
+ *   patch:
+ *     summary: Update product stock (Admin only)
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - stock
+ *             properties:
+ *               stock:
+ *                 type: integer
+ *                 minimum: 0
+ *     responses:
+ *       200:
+ *         description: Stock updated successfully
+ *       403:
+ *         description: Admin access required
+ */
 router.patch(
   '/:id/stock',
   authMiddleware,
@@ -91,6 +303,37 @@ router.patch(
   productsController.updateStock
 );
 
+/**
+ * @swagger
+ * /api/products/{id}/upload:
+ *   post:
+ *     summary: Upload product image (Admin only)
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               image:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       200:
+ *         description: Image uploaded successfully
+ *       403:
+ *         description: Admin access required
+ */
 router.post(
   '/:id/upload',
   authMiddleware,

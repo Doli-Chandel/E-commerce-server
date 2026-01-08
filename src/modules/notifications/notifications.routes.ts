@@ -10,6 +10,35 @@ import {
 const router = Router();
 const notificationsController = new NotificationsController();
 
+/**
+ * @swagger
+ * /api/notifications:
+ *   get:
+ *     summary: Get all notifications
+ *     tags: [Notifications]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *       - in: query
+ *         name: isRead
+ *         schema:
+ *           type: boolean
+ *     responses:
+ *       200:
+ *         description: Notifications retrieved successfully
+ *       401:
+ *         description: Unauthorized
+ */
 router.get(
   '/',
   authMiddleware,
@@ -17,6 +46,29 @@ router.get(
   notificationsController.getAllNotifications
 );
 
+/**
+ * @swagger
+ * /api/notifications/{id}/read:
+ *   patch:
+ *     summary: Mark notification as read
+ *     tags: [Notifications]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     responses:
+ *       200:
+ *         description: Notification marked as read
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Notification not found
+ */
 router.patch(
   '/:id/read',
   authMiddleware,
