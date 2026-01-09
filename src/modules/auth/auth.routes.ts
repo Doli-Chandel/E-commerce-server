@@ -7,7 +7,9 @@ import {
   loginSchema,
   resetPasswordSchema,
   updateProfileSchema,
+  createAdminSchema,
 } from './auth.schemas';
+import { requireAdmin } from '../../middlewares/role.middleware';
 
 const router = Router();
 const authController = new AuthController();
@@ -152,5 +154,49 @@ router.post('/reset-password', validate(resetPasswordSchema), authController.res
  *         description: Unauthorized
  */
 router.put('/profile', authMiddleware, validate(updateProfileSchema), authController.updateProfile);
+
+/**
+ * @swagger
+ * /api/auth/create-admin:
+ *   post:
+ *     summary: Create a new admin user (Admin only)
+ *     tags: [Authentication]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - email
+ *               - password
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 minLength: 2
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               password:
+ *                 type: string
+ *                 minLength: 6
+ *     responses:
+ *       201:
+ *         description: Admin user created successfully
+ *       400:
+ *         description: Validation error or email already exists
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Admin access required
+ */
+router.post(
+  '/create-admin',
+  validate(createAdminSchema),
+  authController.createAdmin
+);
 
 export default router;

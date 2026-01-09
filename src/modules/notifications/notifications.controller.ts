@@ -8,9 +8,9 @@ export class NotificationsController {
 
   getAllNotifications = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const page = req.query.page as number || 1;
-      const limit = req.query.limit as number || 10;
-      const isRead = req.query.isRead as boolean | undefined;
+      const page = req.query.page ? parseInt(req.query.page as string, 10) : 1;
+      const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : 10;
+      const isRead = req.query.isRead === 'true' ? true : req.query.isRead === 'false' ? false : undefined;
       
       const result = await this.notificationsService.getAllNotifications(page, limit, isRead);
       

@@ -9,8 +9,8 @@ export class ProductsController {
 
   getAllProducts = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const page = (req.query.page as number) || 1;
-      const limit = (req.query.limit as number) || 10;
+      const page = req.query.page ? parseInt(req.query.page as string, 10) : 1;
+      const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : 10;
       const search = req.query.search as string | undefined;
       // If user is admin, show all products. Otherwise, only show visible products
       const isVisible = req.user && req.user.role === 'ADMIN' ? undefined : true;

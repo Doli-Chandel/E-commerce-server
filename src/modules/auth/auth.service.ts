@@ -33,6 +33,25 @@ export class AuthService {
     return { user, token };
   }
 
+  async createAdmin(name: string, email: string, password: string): Promise<User> {
+    const existingUser = await this.userRepository.findOne({ where: { email } });
+    if (existingUser) {
+      throw new AppError('Email already registered', 400);
+    }
+
+    const hashedPassword = await hashPassword(password);
+    const user = this.userRepository.create({
+      name,
+      email,
+      password: hashedPassword,
+      role: UserRole.ADMIN,
+      isActive: true,
+    });
+
+    await this.userRepository.save(user);
+    return user;
+  }
+
   async login(email: string, password: string): Promise<{ user: User; token: string }> {
     const user = await this.userRepository.findOne({ where: { email } });
     if (!user) {

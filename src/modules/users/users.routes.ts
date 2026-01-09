@@ -39,6 +39,56 @@ const usersController = new UsersController();
  *       403:
  *         description: Admin access required
  */
+/**
+ * @swagger
+ * /api/users/me:
+ *   get:
+ *     summary: Get current user details (Authenticated users)
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User details retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       format: uuid
+ *                     name:
+ *                       type: string
+ *                     email:
+ *                       type: string
+ *                     role:
+ *                       type: string
+ *                       enum: [ADMIN, USER]
+ *                     isActive:
+ *                       type: boolean
+ *                     createdAt:
+ *                       type: string
+ *                       format: date-time
+ *                     updatedAt:
+ *                       type: string
+ *                       format: date-time
+ *       401:
+ *         description: Unauthorized
+ */
+router.get(
+  '/me',
+  authMiddleware,
+  usersController.getCurrentUser
+);
+
 router.get(
   '/',
   authMiddleware,

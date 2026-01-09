@@ -25,8 +25,29 @@ export class AuthController {
     }
   };
 
+  createAdmin = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const { name, email, password } = req.body;
+      const user = await this.authService.createAdmin(name, email, password);
+      
+      const userResponse = {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        isActive: user.isActive,
+        createdAt: user.createdAt,
+      };
+
+      sendSuccess(res, 'Admin user created successfully', { user: userResponse }, 201);
+    } catch (error) {
+      next(error);
+    }
+  };
+
   login = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
+      console.log('login request', req.body);
       const { email, password } = req.body;
       const { user, token } = await this.authService.login(email, password);
       

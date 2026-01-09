@@ -10,7 +10,9 @@
     "migration:generate": "typeorm-ts-node-commonjs migration:generate -d src/config/datasource.ts",
     "migration:run": "typeorm-ts-node-commonjs migration:run -d src/config/datasource.ts",
     "migration:revert": "typeorm-ts-node-commonjs migration:revert -d src/config/datasource.ts",
-    "create:admin": "ts-node src/utils/createAdmin.ts"
+    "migration:status": "ts-node src/utils/checkMigrations.ts",
+    "create:admin": "ts-node src/utils/createAdmin.ts",
+    "seed": "ts-node src/utils/seed.ts"
   },
   "keywords": ["e-commerce", "backend", "express", "typescript"],
   "author": "",
@@ -42,6 +44,7 @@
     "@types/morgan": "^1.9.9",
     "@types/cors": "^2.8.17",
     "typescript": "^5.3.3",
+    "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0"
   }
 }

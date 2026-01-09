@@ -2,14 +2,37 @@ import { Response, NextFunction } from 'express';
 import { AuthRequest } from '../../middlewares/auth.middleware';
 import { UsersService } from './users.service';
 import { sendSuccess } from '../../utils/response';
+import { AppError } from '../../middlewares/error.middleware';
 
 export class UsersController {
   private usersService = new UsersService();
 
+  getCurrentUser = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      if (!req.user) {
+        throw new AppError('User not authenticated', 401);
+      }
+
+      const user = await this.usersService.getUserById(req.user.id);
+      
+      sendSuccess(res, 'User details retrieved successfully', {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        isActive: user.isActive,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   getAllUsers = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const page = req.query.page as number || 1;
-      const limit = req.query.limit as number || 10;
+      const page = req.query.page ? parseInt(req.query.page as string, 10) : 1;
+      const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : 10;
       const result = await this.usersService.getAllUsers(page, limit);
       
       const users = result.users.map((user) => ({

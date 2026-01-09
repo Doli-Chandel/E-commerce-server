@@ -42,8 +42,8 @@ export class OrdersController {
 
   getAllOrders = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const page = req.query.page as number || 1;
-      const limit = req.query.limit as number || 10;
+      const page = req.query.page ? parseInt(req.query.page as string, 10) : 1;
+      const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : 10;
       const status = req.query.status as string | undefined;
       
       const result = await this.ordersService.getAllOrders(page, limit, status as any);
