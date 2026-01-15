@@ -1,6 +1,8 @@
-# E-commerce Backend Server
+# E-Commerce Backend Server
 
 A production-ready e-commerce backend built with Node.js, TypeScript, Express.js, TypeORM, and PostgreSQL.
+
+> 📚 **For complete documentation, see [DOCUMENTATION.md](./DOCUMENTATION.md)**
 
 ## Features
 
