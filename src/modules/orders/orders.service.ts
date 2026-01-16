@@ -22,16 +22,30 @@ export class OrdersService {
 
       // Validate products and calculate total
       for (const item of items) {
+        // Validate item structure
+        if (!item.productId || !item.quantity) {
+          throw new AppError('Invalid order item: productId and quantity are required', 400);
+        }
+
+        if (typeof item.quantity !== 'number' || item.quantity <= 0) {
+          throw new AppError(`Invalid quantity for product ${item.productId}: must be a positive number`, 400);
+        }
+
         const product = await queryRunner.manager.findOne(Product, {
           where: { id: item.productId },
         });
 
         if (!product) {
-          throw new AppError(`Product ${item.productId} not found`, 404);
+          throw new AppError(
+            `Product with ID "${item.productId}" not found. ` +
+            `This product may have been removed or the ID is incorrect. ` +
+            `Please refresh the product list and try again.`,
+            404
+          );
         }
 
         if (!product.isVisible) {
-          throw new AppError(`Product ${product.name} is not available`, 400);
+          throw new AppError(`Product "${product.name}" is not available for purchase`, 400);
         }
 
         if (product.stock < item.quantity) {

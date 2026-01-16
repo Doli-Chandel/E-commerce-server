@@ -14,6 +14,15 @@ export class OrdersController {
       }
 
       const { items } = req.body;
+
+      // Validate request body
+      if (!items || !Array.isArray(items) || items.length === 0) {
+        throw new AppError('Order items are required and must be a non-empty array', 400);
+      }
+
+      // Log the incoming request for debugging (remove in production)
+      console.log('Creating order with items:', JSON.stringify(items, null, 2));
+
       const order = await this.ordersService.createOrder(req.user.id, items);
       
       const orderResponse = {
