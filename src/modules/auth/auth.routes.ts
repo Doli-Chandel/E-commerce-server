@@ -7,6 +7,7 @@ import {
   loginSchema,
   resetPasswordSchema,
   updateProfileSchema,
+  updatePasswordSchema,
   createAdminSchema,
 } from './auth.schemas';
 import { requireAdmin } from '../../middlewares/role.middleware';
@@ -154,6 +155,39 @@ router.post('/reset-password', validate(resetPasswordSchema), authController.res
  *         description: Unauthorized
  */
 router.put('/profile', authMiddleware, validate(updateProfileSchema), authController.updateProfile);
+
+/**
+ * @swagger
+ * /api/auth/password:
+ *   put:
+ *     summary: Update user password
+ *     tags: [Authentication]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - oldPassword
+ *               - newPassword
+ *             properties:
+ *               oldPassword:
+ *                 type: string
+ *               newPassword:
+ *                 type: string
+ *                 minLength: 6
+ *     responses:
+ *       200:
+ *         description: Password updated successfully
+ *       400:
+ *         description: Current password is incorrect
+ *       401:
+ *         description: Unauthorized
+ */
+router.put('/password', authMiddleware, validate(updatePasswordSchema), authController.updatePassword);
 
 /**
  * @swagger

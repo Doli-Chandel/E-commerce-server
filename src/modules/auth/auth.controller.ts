@@ -64,7 +64,7 @@ export class AuthController {
     }
   };
 
-  logout = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
+  logout = async (_req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
       sendSuccess(res, 'Logout successful');
     } catch (error) {
@@ -99,6 +99,21 @@ export class AuthController {
       };
 
       sendSuccess(res, 'Profile updated successfully', { user: userResponse });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  updatePassword = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      if (!req.user) {
+        throw new AppError('User not authenticated', 401);
+      }
+
+      const { oldPassword, newPassword } = req.body;
+      await this.authService.updatePassword(req.user.id, oldPassword, newPassword);
+      
+      sendSuccess(res, 'Password updated successfully');
     } catch (error) {
       next(error);
     }

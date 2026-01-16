@@ -108,4 +108,20 @@ export class AuthService {
     await this.userRepository.save(user);
     return user;
   }
+
+  async updatePassword(userId: string, oldPassword: string, newPassword: string): Promise<void> {
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    if (!user) {
+      throw new AppError('User not found', 404);
+    }
+
+    const isPasswordValid = await comparePassword(oldPassword, user.password);
+    if (!isPasswordValid) {
+      throw new AppError('Current password is incorrect', 400);
+    }
+
+    const hashedPassword = await hashPassword(newPassword);
+    user.password = hashedPassword;
+    await this.userRepository.save(user);
+  }
 }
