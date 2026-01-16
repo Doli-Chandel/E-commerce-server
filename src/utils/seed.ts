@@ -106,7 +106,7 @@ async function seed() {
         salePrice: 1299.99,
         stock: 25,
         isVisible: true,
-        images: ['/uploads/laptop-pro-15.jpg'],
+        images: ['https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=800&h=600&fit=crop'],
       },
       {
         name: 'Wireless Mouse',
@@ -115,7 +115,7 @@ async function seed() {
         salePrice: 19.99,
         stock: 150,
         isVisible: true,
-        images: ['/uploads/wireless-mouse.jpg'],
+        images: ['https://images.unsplash.com/photo-1527814050087-3793815479db?w=800&h=600&fit=crop'],
       },
       {
         name: 'Mechanical Keyboard',
@@ -124,7 +124,7 @@ async function seed() {
         salePrice: 89.99,
         stock: 75,
         isVisible: true,
-        images: ['/uploads/mechanical-keyboard.jpg'],
+        images: ['https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=800&h=600&fit=crop'],
       },
       {
         name: 'USB-C Hub',
@@ -133,7 +133,7 @@ async function seed() {
         salePrice: 49.99,
         stock: 100,
         isVisible: true,
-        images: ['/uploads/usb-c-hub.jpg'],
+        images: ['https://m.media-amazon.com/images/I/51AXDxd3RqL.jpg'],
       },
       {
         name: 'Monitor 27" 4K',
@@ -142,7 +142,7 @@ async function seed() {
         salePrice: 599.99,
         stock: 40,
         isVisible: true,
-        images: ['/uploads/monitor-27-4k.jpg'],
+        images: ['https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=800&h=600&fit=crop'],
       },
       {
         name: 'Webcam HD 1080p',
@@ -151,7 +151,7 @@ async function seed() {
         salePrice: 69.99,
         stock: 80,
         isVisible: true,
-        images: ['/uploads/webcam-hd.jpg'],
+        images: ['https://m.media-amazon.com/images/I/51GD-1D3ocL._SX522_.jpg?w=800&h=600&fit=crop'],
       },
       {
         name: 'Desk Lamp LED',
@@ -160,7 +160,7 @@ async function seed() {
         salePrice: 34.99,
         stock: 120,
         isVisible: true,
-        images: ['/uploads/desk-lamp-led.jpg'],
+        images: ['https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=800&h=600&fit=crop'],
       },
       {
         name: 'Laptop Stand',
@@ -169,7 +169,7 @@ async function seed() {
         salePrice: 39.99,
         stock: 90,
         isVisible: true,
-        images: ['/uploads/laptop-stand.jpg'],
+        images: ['https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=800&h=600&fit=crop'],
       },
       {
         name: 'Noise Cancelling Headphones',
@@ -178,7 +178,7 @@ async function seed() {
         salePrice: 249.99,
         stock: 50,
         isVisible: true,
-        images: ['/uploads/headphones.jpg'],
+        images: ['https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&h=600&fit=crop'],
       },
       {
         name: 'External SSD 1TB',
@@ -187,7 +187,7 @@ async function seed() {
         salePrice: 119.99,
         stock: 65,
         isVisible: false, // Hidden product for testing
-        images: ['/uploads/external-ssd.jpg'],
+        images: ['https://images.unsplash.com/photo-1591488320449-011701bb6704?w=800&h=600&fit=crop'],
       },
     ];
 

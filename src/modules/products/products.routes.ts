@@ -129,6 +129,10 @@ router.get('/:id', validate(getProductSchema), productsController.getProductById
  *                 type: integer
  *               isVisible:
  *                 type: boolean
+ *               image:
+ *                 type: string
+ *                 format: uri
+ *                 description: Web URL of the image (must start with http:// or https://)
  *     responses:
  *       201:
  *         description: Product created successfully

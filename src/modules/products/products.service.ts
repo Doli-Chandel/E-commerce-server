@@ -48,13 +48,14 @@ export class ProductsService {
     salePrice: number;
     stock: number;
     isVisible?: boolean;
+    images?: string[];
   }): Promise<Product> {
     const margin = data.salePrice - data.purchasePrice;
     const product = this.productRepository.create({
       ...data,
       margin,
       isVisible: data.isVisible !== undefined ? data.isVisible : true,
-      images: [],
+      images: data.images || [],
     });
 
     return await this.productRepository.save(product);
@@ -67,6 +68,7 @@ export class ProductsService {
     salePrice?: number;
     stock?: number;
     isVisible?: boolean;
+    images?: string[];
   }): Promise<Product> {
     const product = await this.productRepository.findOne({ where: { id } });
     if (!product) {
@@ -79,6 +81,7 @@ export class ProductsService {
     if (data.salePrice !== undefined) product.salePrice = data.salePrice;
     if (data.stock !== undefined) product.stock = data.stock;
     if (data.isVisible !== undefined) product.isVisible = data.isVisible;
+    if (data.images !== undefined) product.images = data.images;
 
     // Recalculate margin if prices changed
     if (data.purchasePrice !== undefined || data.salePrice !== undefined) {

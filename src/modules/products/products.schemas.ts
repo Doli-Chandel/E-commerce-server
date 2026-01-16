@@ -8,6 +8,12 @@ export const createProductSchema = z.object({
     salePrice: z.number().positive('Sale price must be positive'),
     stock: z.number().int().min(0, 'Stock must be non-negative'),
     isVisible: z.boolean().optional(),
+    image: z.string()
+      .url('Image must be a valid URL')
+      .refine((url) => url.startsWith('http://') || url.startsWith('https://'), {
+        message: 'Image URL must start with http:// or https://',
+      })
+      .optional(), // Only accept web URLs
   }),
 });
 
@@ -19,6 +25,12 @@ export const updateProductSchema = z.object({
     salePrice: z.number().positive('Sale price must be positive').optional(),
     stock: z.number().int().min(0, 'Stock must be non-negative').optional(),
     isVisible: z.boolean().optional(),
+    image: z.string()
+      .url('Image must be a valid URL')
+      .refine((url) => url.startsWith('http://') || url.startsWith('https://'), {
+        message: 'Image URL must start with http:// or https://',
+      })
+      .optional(), // Only accept web URLs
   }),
   params: z.object({
     id: z.string().uuid('Invalid product ID'),
